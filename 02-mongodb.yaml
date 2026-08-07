@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: mongodb
+  namespace: roboshop
+spec:
+  podSelector:
+    matchLabels:
+      project: roboshop
+      tier: database
+      component: mongodb
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          project: roboshop
+          tier: backend
+          component: catalogue
+    - podSelector:
+        matchLabels:
+          project: roboshop
+          tier: backend
+          component: cart
+    ports:
+    - protocol: TCP
+      port: 27017
+
